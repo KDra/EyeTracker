@@ -9,11 +9,15 @@
 
 FROM tensorflow/tensorflow:2.3.1-gpu-jupyter
 
-RUN pip install mtcnn
+RUN apt-get update
+RUN apt-get install 'ffmpeg'\
+    'libsm6'\ 
+    'libxext6'  -y
+RUN pip install mtcnn joblib
 
 WORKDIR /tf/images
 WORKDIR /tf/embeddings
 WORKDIR /tf
 
-COPY extract_faces.py
-RUN python extract_faces.py
+COPY extract_faces.py .
+# RUN python extract_faces.py
