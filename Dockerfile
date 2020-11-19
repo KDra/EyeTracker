@@ -5,7 +5,9 @@
 # used to track the gaze direction of the subjects
 # 
 # Development started on 17/10/2020
-# Developers Konstantinos Drakopoulos and Barbu Revencu
+# Developers:
+#   Konstantinos Drakopoulos    drakopuloskostas@gmail.com
+#   Barbu Revencu
 
 FROM tensorflow/tensorflow:2.3.1-gpu-jupyter
 
@@ -21,4 +23,5 @@ WORKDIR /tf/videos
 WORKDIR /tf
 
 COPY extract_faces.py .
+COPY tester.ipynb .
 CMD python extract_faces.py
