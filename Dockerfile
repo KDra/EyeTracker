@@ -17,7 +17,8 @@ RUN pip install mtcnn joblib
 
 WORKDIR /tf/images
 WORKDIR /tf/embeddings
+WORKDIR /tf/videos
 WORKDIR /tf
 
 COPY extract_faces.py .
-# RUN python extract_faces.py
+CMD python extract_faces.py

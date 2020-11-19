@@ -2,6 +2,7 @@ from pathlib import Path
 from mtcnn import MTCNN
 from joblib import Parallel, delayed
 from json import dump as jdump
+from copy import deepcopy
 import cv2
 
 img_dir = Path('images/')
@@ -23,7 +24,24 @@ for k, faces in outputs.items():
     img_idx = img_paths.index(k)
     for it, face in enumerate(faces):
         bb = face['box']
-        cropped_img = images[img_idx][bb[0]:bb[0]+bb[2], bb[1]:bb[1]+bb[3]]
-        fn = Path(k[::-1].replace('.', f'.{it}_', 1)[::-1]).name
+        cropped_img = images[img_idx][bb[1]:bb[1]+bb[3], bb[0]:bb[0]+bb[2]]
+        fn = 'cropped_' + Path(k[::-1].replace('.', f'.{it}_', 1)[::-1]).name
         cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(cropped_img, cv2.COLOR_RGB2BGR))
+        bounding_box = face['box']
+        keypoints = face['keypoints']
+        image = deepcopy(images[img_idx])
+        fn = Path(k[::-1].replace('.', f'.{it}_', 1)[::-1]).name
 
+        cv2.rectangle(image,
+                    (bounding_box[0], bounding_box[1]),
+                    (bounding_box[0]+bounding_box[2], bounding_box[1] + bounding_box[3]),
+                    (0,155,255),
+                    2)
+
+        cv2.circle(image,(keypoints['left_eye']), 2, (0,155,255), 2)
+        cv2.circle(image,(keypoints['right_eye']), 2, (0,155,255), 2)
+        cv2.circle(image,(keypoints['nose']), 2, (0,155,255), 2)
+        cv2.circle(image,(keypoints['mouth_left']), 2, (0,155,255), 2)
+        cv2.circle(image,(keypoints['mouth_right']), 2, (0,155,255), 2)
+
+        cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
