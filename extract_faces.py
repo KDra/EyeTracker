@@ -2,13 +2,22 @@ from pathlib import Path
 from mtcnn import MTCNN
 from joblib import Parallel, delayed
 from json import dump as jdump
+from json import load as jload
+from yaml import load as yload
+from yaml import SafeLoader
 from copy import deepcopy
 import cv2
 
-img_dir = Path('images/')
+config_file = Path('./config.yml')
+assert config_file.exists(), "ERROR!\nMake sure the 'config.yml' file exists in the current folder."
+config = yload(open(config_file, 'r'))
+
+img_dir = Path(config['img_dir'])
+video_dir = Path(config['video_dir'])
+videos = video_dir.glob('*')
 face_outputs = Path('tmp_faces/')
 face_outputs.mkdir(parents=True, exist_ok=True)
-embeddings_dir = Path('embeddings/')
+embeddings_dir = Path(config['embeddings_dir'])
 
 img_paths = list(map(str, img_dir.glob("*")))
 convert_images = lambda path: cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
