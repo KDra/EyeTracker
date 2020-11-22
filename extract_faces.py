@@ -1,5 +1,4 @@
 from pathlib import Path
-from mtcnn import MTCNN
 from joblib import Parallel, delayed
 from json import dump as jdump
 from json import load as jload
@@ -7,6 +6,7 @@ from yaml import load as yload
 from yaml import SafeLoader
 from copy import deepcopy
 import cv2
+from mtcnn import MTCNN
 
 config_file = Path('./config.yml')
 assert config_file.exists(), "ERROR!\nMake sure the 'config.yml' file exists in the current folder."
@@ -35,7 +35,10 @@ for k, faces in outputs.items():
         bb = face['box']
         cropped_img = images[img_idx][bb[1]:bb[1]+bb[3], bb[0]:bb[0]+bb[2]]
         fn = 'cropped_' + Path(k[::-1].replace('.', f'.{it}_', 1)[::-1]).name
-        cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(cropped_img, cv2.COLOR_RGB2BGR))
+        try:
+            cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(cropped_img, cv2.COLOR_RGB2BGR))
+        except:
+            print(f"Error writing {embeddings_dir/fn}")
         bounding_box = face['box']
         keypoints = face['keypoints']
         image = deepcopy(images[img_idx])
@@ -52,5 +55,7 @@ for k, faces in outputs.items():
         cv2.circle(image,(keypoints['nose']), 2, (0,155,255), 2)
         cv2.circle(image,(keypoints['mouth_left']), 2, (0,155,255), 2)
         cv2.circle(image,(keypoints['mouth_right']), 2, (0,155,255), 2)
-
-        cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+        try:
+            cv2.imwrite(str(embeddings_dir/fn), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+        except:
+            print(f"Error writing {embeddings_dir/fn}")
