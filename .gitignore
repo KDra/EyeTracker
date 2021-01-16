@@ -145,5 +145,7 @@ embeddings/*
 *.tflite
 *.h5
 *.gz
+*.xz
 *.zip
 *.tgz
+*.json
