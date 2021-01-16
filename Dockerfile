@@ -9,19 +9,21 @@
 #   Konstantinos Drakopoulos    drakopuloskostas@gmail.com
 #   Barbu Revencu
 
-FROM tensorflow/tensorflow:2.3.1-gpu-jupyter
+FROM tensorflow/tensorflow:2.3.1-gpu
 
 RUN apt-get update
-RUN apt-get install 'ffmpeg'\
-    'libsm6'\ 
-    'libxext6'  -y
-RUN pip install mtcnn joblib
+RUN apt install libgl1-mesa-glx -y
+# RUN apt-get install 'ffmpeg'\
+#     'libsm6'\ 
+#     'libxext6'  -y
+RUN pip install joblib pandas mediapipe
 
 WORKDIR /tf/images
 WORKDIR /tf/embeddings
 WORKDIR /tf/videos
+COPY videos/ .
 WORKDIR /tf
 
-COPY extract_faces.py .
-COPY tester.ipynb .
-CMD python extract_faces.py
+COPY process_frames.py .
+COPY classifier2.tflite .
+CMD python process_frames.py videos/* -e 100

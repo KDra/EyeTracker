@@ -1,0 +1,5 @@
+joblib==1.0.0
+mediapipe==0.8.1
+opencv-python==4.4.0.46
+pandas==1.1.4
+tensorflow-gpu==2.3.1
