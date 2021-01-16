@@ -142,3 +142,8 @@ embeddings/*
 *.jpeg
 *.csv
 *.mp4
+*.tflite
+*.h5
+*.gz
+*.zip
+*.tgz
