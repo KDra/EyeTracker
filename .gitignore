@@ -149,3 +149,7 @@ embeddings/*
 *.zip
 *.tgz
 *.json
+*.pb
+classifier2/
+babyGaze/
+efficientnet*
