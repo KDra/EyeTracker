@@ -7,14 +7,14 @@ from PIL import Image, ImageOps, ImageFilter
 from numpy.random import choice
 
 
-root = Path('images/')
+root = Path('images_bf/train/')
 fl = list(root.rglob('*.jpg'))
 
 
 classes = set([f.stem.split('_')[-1] for f in fl])
 
 
-new_root = Path(f'{root.stem}_train/')
+new_root = Path(root.parent/f'prep_train/')
 for c in classes:
     if c in ['up', 'away', 'blink', 'unknown']:
         c = 'other'
