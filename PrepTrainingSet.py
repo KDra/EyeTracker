@@ -25,7 +25,7 @@ for f in fl:
     cl = f.stem.split('_')[-1]
     if cl in ['up', 'away', 'blink', 'unknown']:
         cl = 'other'
-    copy(f, new_root/cl/'_'.join(f.parts[1::3]))
+    f.rename(new_root/cl/'_'.join(f.parts[2::3]))
 classes = set(new_root.glob('*/'))
 
 
